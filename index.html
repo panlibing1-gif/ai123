@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI123 - AI工具导航 | AI Tools Navigation</title>
+  <meta name="description" content="AI123 - 全球最全的AI工具导航网站，涵盖AI对话、AI绘画、AI视频、AI编程、AI写作等所有主流AI工具。The most comprehensive AI tools navigation site." />
+  <meta name="keywords" content="AI导航,AI工具,ChatGPT,Claude,Midjourney,AI123,人工智能,AI navigation" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>" />
+  <style>
+    :root {
+      --primary: #1565C0;
+      --primary-light: #1976D2;
+      --accent: #FF6F00;
+      --accent-light: #FF8F00;
+      --bg: #f4f6f9;
+      --white: #ffffff;
+      --text: #333;
+      --text-light: #666;
+      --text-muted: #999;
+      --border: #e0e4ea;
+      --shadow: 0 1px 4px rgba(0,0,0,0.08);
+      --shadow-hover: 0 4px 16px rgba(21,101,192,0.15);
+      --header-bg: #1565C0;
+      --tag-colors: #e8f0fe, #fce4ec, #e8f5e9, #fff3e0, #f3e5f5, #e0f7fa, #fff8e1, #fbe9e7;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "Microsoft YaHei", "PingFang SC", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 13px;
+      min-height: 100vh;
+    }
+
+    /* ===== HEADER ===== */
+    #header {
+      background: var(--header-bg);
+      padding: 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+
+    .header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 20px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+
+    .logo-icon {
+      font-size: 28px;
+    }
+
+    .logo-text {
+      color: #fff;
+      font-size: 26px;
+      font-weight: 900;
+      letter-spacing: 1px;
+      font-style: italic;
+    }
+
+    .logo-text span {
+      color: #FFD600;
+    }
+
+    .logo-sub {
+      color: rgba(255,255,255,0.7);
+      font-size: 11px;
+      margin-top: -2px;
+    }
+
+    /* 搜索框 */
+    .search-box {
+      display: flex;
+      flex: 1;
+      max-width: 500px;
+      margin: 0 30px;
+    }
+
+    .search-box input {
+      flex: 1;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 20px 0 0 20px;
+      font-size: 13px;
+      outline: none;
+    }
+
+    .search-box button {
+      padding: 8px 20px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 0 20px 20px 0;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    .search-box button:hover { background: var(--accent-light); }
+
+    /* 右侧操作 */
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .lang-btn {
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.4);
+      border-radius: 4px;
+      padding: 5px 12px;
+      cursor: pointer;
+      font-size: 12px;
+      transition: all 0.2s;
+    }
+
+    .lang-btn:hover { background: rgba(255,255,255,0.3); }
+
+    .header-nav {
+      background: rgba(0,0,0,0.15);
+      padding: 4px 20px;
+      display: flex;
+      gap: 0;
+      overflow-x: auto;
+    }
+
+    .header-nav a {
+      color: rgba(255,255,255,0.9);
+      text-decoration: none;
+      padding: 4px 14px;
+      font-size: 12px;
+      white-space: nowrap;
+      transition: color 0.2s;
+      border-right: 1px solid rgba(255,255,255,0.15);
+    }
+
+    .header-nav a:hover { color: #FFD600; }
+
+    /* ===== MAIN ===== */
+    #main {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 12px 16px;
+    }
+
+    /* ===== 分类区块 ===== */
+    .category-block {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      margin-bottom: 10px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .cat-header {
+      display: flex;
+      align-items: center;
+      padding: 8px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(90deg, #f0f4ff 0%, #f8f9fb 100%);
+    }
+
+    .cat-icon { font-size: 18px; margin-right: 8px; }
+
+    .cat-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--primary);
+      flex: 1;
+    }
+
+    .cat-more {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-decoration: none;
+    }
+
+    .cat-more:hover { color: var(--primary); }
+
+    .sites-grid {
+      display: flex;
+      flex-wrap: wrap;
+      padding: 8px 12px;
+      gap: 2px 0;
+    }
+
+    /* ===== 单个网站条目 ===== */
+    .site-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 5px 10px;
+      border-radius: 4px;
+      text-decoration: none;
+      color: #333;
+      font-size: 13px;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+
+    .site-item:hover {
+      background: #e8f0fe;
+      color: var(--primary);
+    }
+
+    .site-favicon {
+      width: 16px;
+      height: 16px;
+      border-radius: 3px;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+
+    .site-badge {
+      font-size: 10px;
+      padding: 1px 4px;
+      border-radius: 2px;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+
+    .badge-hot { background: #ff4444; color: #fff; }
+    .badge-new { background: #00aa44; color: #fff; }
+    .badge-free { background: #1565C0; color: #fff; }
+    .badge-cn { background: #FF6F00; color: #fff; }
+
+    /* ===== 热门推荐 Top Banner ===== */
+    .top-banner {
+      background: linear-gradient(135deg, #1565C0 0%, #0D47A1 50%, #1a237e 100%);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .top-banner-title {
+      color: #FFD600;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .top-banner-sites {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .top-site-btn {
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 20px;
+      padding: 5px 14px;
+      text-decoration: none;
+      font-size: 13px;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .top-site-btn:hover {
+      background: rgba(255,255,255,0.3);
+      border-color: #FFD600;
+      color: #FFD600;
+    }
+
+    /* ===== 双列布局 ===== */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    /* ===== 公告栏 ===== */
+    .notice-bar {
+      background: #fffde7;
+      border: 1px solid #ffe082;
+      border-radius: 6px;
+      padding: 8px 14px;
+      margin-bottom: 10px;
+      font-size: 12px;
+      color: #795548;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* ===== FOOTER ===== */
+    #footer {
+      background: #1a2035;
+      color: rgba(255,255,255,0.6);
+      text-align: center;
+      padding: 20px;
+      margin-top: 20px;
+      font-size: 12px;
+    }
+
+    #footer a { color: rgba(255,255,255,0.4); text-decoration: none; }
+    #footer a:hover { color: #fff; }
+
+    /* ===== 响应式 ===== */
+    @media (max-width: 768px) {
+      .two-col { grid-template-columns: 1fr; }
+      .search-box { max-width: 280px; margin: 0 10px; }
+      .logo-text { font-size: 20px; }
+      .header-top { padding: 6px 12px; }
+    }
+
+    @media (max-width: 480px) {
+      .search-box { display: none; }
+    }
+
+    /* ===== 隐藏/显示语言 ===== */
+    [data-lang="en"] { display: none; }
+    body.lang-en [data-lang="zh"] { display: none; }
+    body.lang-en [data-lang="en"] { display: block; }
+    body.lang-en .cat-title[data-lang="en"] { display: flex; }
+    body.lang-en .sites-grid [data-lang="en"] { display: inline-flex; }
+
+    /* 搜索高亮 */
+    .site-item.hidden { display: none !important; }
+  </style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<div id="header">
+  <div class="header-top">
+    <a class="logo" href="#">
+      <span class="logo-icon">🤖</span>
+      <div>
+        <div class="logo-text">AI<span>123</span></div>
+        <div class="logo-sub" data-lang="zh">全球AI工具导航</div>
+        <div class="logo-sub" data-lang="en">Global AI Tools Navigation</div>
+      </div>
+    </a>
+
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="搜索AI工具... Search AI Tools..." oninput="filterSites(this.value)" />
+      <button onclick="filterSites(document.getElementById('searchInput').value)">🔍</button>
+    </div>
+
+    <div class="header-right">
+      <button class="lang-btn" onclick="toggleLang()" id="langBtn">🌐 English</button>
+    </div>
+  </div>
+
+  <div class="header-nav" id="headerNav">
+    <a href="#ai-chat" data-zh="💬 AI对话" data-en="💬 AI Chat">💬 AI对话</a>
+    <a href="#ai-image" data-zh="🎨 AI绘画" data-en="🎨 AI Image">🎨 AI绘画</a>
+    <a href="#ai-video" data-zh="🎬 AI视频" data-en="🎬 AI Video">🎬 AI视频</a>
+    <a href="#ai-code" data-zh="💻 AI编程" data-en="💻 AI Coding">💻 AI编程</a>
+    <a href="#ai-write" data-zh="✍️ AI写作" data-en="✍️ AI Writing">✍️ AI写作</a>
+    <a href="#ai-search" data-zh="🔍 AI搜索" data-en="🔍 AI Search">🔍 AI搜索</a>
+    <a href="#ai-audio" data-zh="🎵 AI音频" data-en="🎵 AI Audio">🎵 AI音频</a>
+    <a href="#ai-3d" data-zh="🧊 AI 3D" data-en="🧊 AI 3D">🧊 AI 3D</a>
+    <a href="#ai-agent" data-zh="🤖 AI助手" data-en="🤖 AI Agent">🤖 AI助手</a>
+    <a href="#ai-business" data-zh="💼 AI商业" data-en="💼 AI Business">💼 AI商业</a>
+    <a href="#ai-edu" data-zh="📚 AI教育" data-en="📚 AI Education">📚 AI教育</a>
+    <a href="#ai-cn" data-zh="🇨🇳 国内AI" data-en="🇨🇳 China AI">🇨🇳 国内AI</a>
+  </div>
+</div>
+
+<!-- ===== MAIN ===== -->
+<div id="main">
+
+  <!-- 公告栏 -->
+  <div class="notice-bar">
+    📢 <span data-lang="zh">欢迎来到 AI123！收录全球 200+ AI工具，每周持续更新。如需提交收录，请联系我们。</span>
+    <span data-lang="en">Welcome to AI123! Over 200+ AI tools curated globally, updated weekly. Submit your AI tool to us!</span>
+  </div>
+
+  <!-- 顶部热门 Banner -->
+  <div class="top-banner">
+    <div class="top-banner-title">
+      <span data-lang="zh">⭐ 今日最热 AI 工具</span>
+      <span data-lang="en">⭐ Today's Hottest AI Tools</span>
+    </div>
+    <div class="top-banner-sites">
+      <a class="top-site-btn" href="https://chat.openai.com" target="_blank">🤖 ChatGPT</a>
+      <a class="top-site-btn" href="https://claude.ai" target="_blank">🧠 Claude</a>
+      <a class="top-site-btn" href="https://www.midjourney.com" target="_blank">🎨 Midjourney</a>
+      <a class="top-site-btn" href="https://gemini.google.com" target="_blank">💎 Gemini</a>
+      <a class="top-site-btn" href="https://www.kimi.ai" target="_blank">🌙 Kimi</a>
+      <a class="top-site-btn" href="https://cursor.sh" target="_blank">💻 Cursor</a>
+      <a class="top-site-btn" href="https://sora.com" target="_blank">🎬 Sora</a>
+      <a class="top-site-btn" href="https://perplexity.ai" target="_blank">🔍 Perplexity</a>
+    </div>
+  </div>
+
+  <!-- ===== AI 对话 / Chat ===== -->
+  <div class="category-block" id="ai-chat">
+    <div class="cat-header">
+      <span class="cat-icon">💬</span>
+      <span class="cat-title" data-lang="zh">AI 对话 / 聊天机器人</span>
+      <span class="cat-title" data-lang="en" style="display:none">AI Chat / Chatbots</span>
+    </div>
+    <div class="sites-grid">
+      <!-- 国际 -->
+      <a class="site-item" href="https://chat.openai.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=openai.com&sz=16" alt="">ChatGPT<span class="site-badge badge-hot">HOT</span></a>
+      <a class="site-item" href="https://claude.ai" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=claude.ai&sz=16" alt="">Claude<span class="site-badge badge-hot">HOT</span></a>
+      <a class="site-item" href="https://gemini.google.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=gemini.google.com&sz=16" alt="">Gemini<span class="site-badge badge-hot">HOT</span></a>
+      <a class="site-item" href="https://copilot.microsoft.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=microsoft.com&sz=16" alt="">Microsoft Copilot</a>
+      <a class="site-item" href="https://www.meta.ai" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=meta.ai&sz=16" alt="">Meta AI</a>
+      <a class="site-item" href="https://groq.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=groq.com&sz=16" alt="">Groq<span class="site-badge badge-free">FREE</span></a>
+      <a class="site-item" href="https://mistral.ai" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=mistral.ai&sz=16" alt="">Mistral AI</a>
+      <a class="site-item" href="https://grok.x.ai" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=x.ai&sz=16" alt="">Grok (xAI)</a>
+      <a class="site-item" href="https://huggingface.co/chat" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=huggingface.co&sz=16" alt="">HuggingChat<span class="site-badge badge-free">FREE</span></a>
+      <a class="site-item" href="https://character.ai" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=character.ai&sz=16" alt="">Character.AI</a>
+      <a class="site-item" href="https://www.perplexity.ai" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=perplexity.ai&sz=16" alt="">Perplexity AI</a>
+      <a class="site-item" href="https://you.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=you.com&sz=16" alt="">You.com</a>
+      <a class="site-item" href="https://phind.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=phind.com&sz=16" alt="">Phind</a>
+      <a class="site-item" href="https://pi.ai" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=pi.ai&sz=16" alt="">Pi (Inflection AI)</a>
+      <a class="site-item" href="https://poe.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=poe.com&sz=16" alt="">Poe</a>
+      <!-- 国内 -->
+      <a class="site-item" href="https://www.kimi.ai" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=kimi.ai&sz=16" alt="">Kimi AI<span class="site-badge badge-cn">国内</span></a>
+      <a class="site-item" href="https://yiyan.baidu.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=baidu.com&sz=16" alt="">文心一言<span class="site-badge badge-cn">国内</span></a>
+      <a class="site-item" href="https://tongyi.aliyun.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=aliyun.com&sz=16" alt="">通义千问<span class="site-badge badge-cn">国内</span></a>
+      <a class="site-item" href="https://chat.sensetime.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=sensetime.com&sz=16" alt="">商量(商汤)<span class="site-badge badge-cn">国内</span></a>
+      <a class="site-item" href="https://xinghuo.xfyun.cn" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=xfyun.cn&sz=16" alt="">讯飞星火<span class="site-badge badge-cn">国内</span></a>
+      <a class="site-item" href="https://chatglm.cn" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=chatglm.cn&sz=16" alt="">智谱ChatGLM<span class="site-badge badge-cn">国内</span></a>
+      <a class="site-item" href="https://www.doubao.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=doubao.com&sz=16" alt="">豆包(字节)<span class="site-badge badge-cn">国内</span></a>
+      <a class="site-item" href="https://www.tiangong.cn" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=tiangong.cn&sz=16" alt="">天工AI<span class="site-badge badge-cn">国内</span></a>
+      <a class="site-item" href="https://hailuoai.video" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=hailuoai.video&sz=16" alt="">海螺AI<span class="site-badge badge-cn">国内</span></a>
+      <a class="site-item" href="https://www.deepseek.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=deepseek.com&sz=16" alt="">DeepSeek<span class="site-badge badge-cn">国内</span><span class="site-badge badge-hot">HOT</span></a>
+      <a class="site-item" href="https://www.baichuan-ai.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=baichuan-ai.com&sz=16" alt="">百川AI<span class="site-badge badge-cn">国内</span></a>
+      <a class="site-item" href="https://www.minimaxi.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=minimaxi.com&sz=16" alt="">MiniMax/海螺<span class="site-badge badge-cn">国内</span></a>
+      <a class="site-item" href="https://hunyuan.tencent.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=tencent.com&sz=16" alt="">腾讯混元<span class="site-badge badge-cn">国内</span></a>
+    </div>
+  </div>
+
+  <!-- ===== AI 绘画 / Image Generation ===== -->
+  <div class="category-block" id="ai-image">
+    <div class="cat-header">
+      <span class="cat-icon">🎨</span>
+      <span class="cat-title" data-lang="zh">AI 绘画 / 图像生成</span>
+      <span class="cat-title" data-lang="en" style="display:none">AI Image Generation</span>
+    </div>
+    <div class="sites-grid">
+      <a class="site-item" href="https://www.midjourney.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=midjourney.com&sz=16" alt="">Midjourney<span class="site-badge badge-hot">HOT</span></a>
+      <a class="site-item" href="https://openai.com/dall-e-3" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=openai.com&sz=16" alt="">DALL-E 3</a>
+      <a class="site-item" href="https://stability.ai" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=stability.ai&sz=16" alt="">Stable Diffusion</a>
+      <a class="site-item" href="https://www.adobe.com/products/firefly.html" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=adobe.com&sz=16" alt="">Adobe Firefly</a>
+      <a class="site-item" href="https://creator.nightcafe.studio" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=nightcafe.studio&sz=16" alt="">NightCafe</a>
+      <a class="site-item" href="https://www.canva.com/ai-image-generator" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=canva.com&sz=16" alt="">Canva AI</a>
+      <a class="site-item" href="https://ideogram.ai" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=ideogram.ai&sz=16" alt="">Ideogram<span class="site-badge badge-new">NEW</span></a>
+      <a class="site-item" href="https://leonardo.ai" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=leonardo.ai&sz=16" alt="">Leonardo AI</a>
+      <a class="site-item" href="https://www.bing.com/images/create" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=bing.com&sz=16" alt="">必应AI绘图<span class="site-badge badge-free">FREE</span></a>
+      <a class="site-item" href="https://playgroundai.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=playgroundai.com&sz=16" alt="">Playground AI</a>
+      <a class="site-item" href="https://tensor.art" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=tensor.art&sz=16" alt="">Tensor.Art</a>
+      <a class="site-item" href="https://civitai.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=civitai.com&sz=16" alt="">Civitai</a>
+      <a class="site-item" href="https://www.artbreeder.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=artbreeder.com&sz=16" alt="">Artbreeder</a>
+      <a class="site-item" href="https://firefly.adobe.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=adobe.com&sz=16" alt="">Firefly</a>
+      <a class="site-item" href="https://www.seaart.ai" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=seaart.ai&sz=16" alt="">SeaArt<span class="site-badge badge-cn">国内</span></a>
+      <a class="site-item" href="https://www.liblib.art" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=liblib.art&sz=16" alt="">哩布哩布<span class="site-badge badge-cn">国内</span></a>
+      <a class="site-item" href="https://www.dreamina.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=dreamina.com&sz=16" alt="">即梦AI<span class="site-badge badge-cn">国内</span></a>
+      <a class="site-item" href="https://tongyi.aliyun.com/wanxiang" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=aliyun.com&sz=16" alt="">通义万象<span class="site-badge badge-cn">国内</span></a>
+      <a class="site-item" href="https://www.wujie.ai" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=wujie.ai&sz=16" alt="">无界AI<span class="site-badge badge-cn">国内</span></a>
+      <a class="site-item" href="https://aigc.baidu.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=baidu.com&sz=16" alt="">百度AIGC<span class="site-badge badge-cn">国内</span></a>
+      <a class="site-item" href="https://www.6pen.art" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=6pen.art&sz=16" alt="">6pen Art<span class="site-badge badge-cn">国内</span></a>
+      <a class="site-item" href="https://www.mewxai.cn" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=mewxai.cn&sz=16" alt="">Mewx AI<span class="site-badge badge-cn">国内</span></a>
+      <a class="site-item" href="https://flux1.ai" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=flux1.ai&sz=16" alt="">FLUX<span class="site-badge badge-new">NEW</span></a>
+    </div>
+  </div>
+
+  <!-- ===== AI 视频 / Video ===== -->
+  <div class="category-block" id="ai-video">
+    <div class="cat-header">
+      <span class="cat-icon">🎬</span>
+      <span class="cat-title" data-lang="zh">AI 视频 / 影像创作</span>
+      <span class="cat-title" data-lang="en" style="display:none">AI Video Generation</span>
+    </div>
+    <div class="sites-grid">
+      <a class="site-item" href="https://sora.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=openai.com&sz=16" alt="">Sora (OpenAI)<span class="site-badge badge-hot">HOT</span></a>
+      <a class="site-item" href="https://runwayml.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=runwayml.com&sz=16" alt="">Runway ML</a>
+      <a class="site-item" href="https://www.pika.art" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=pika.art&sz=16" alt="">Pika Labs</a>
+      <a class="site-item" href="https://klingai.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=klingai.com&sz=16" alt="">可灵AI (Kling)<span class="site-badge badge-cn">国内</span><span class="site-badge badge-hot">HOT</span></a>
+      <a class="site-item" href="https://hailuoai.video" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=hailuoai.video&sz=16" alt="">海螺AI视频<span class="site-badge badge-cn">国内</span></a>
+      <a class="site-item" href="https://dreamina.capcut.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=capcut.com&sz=16" alt="">剪映AI/即梦<span class="site-badge badge-cn">国内</span></a>
+      <a class="site-item" href="https://www.luma.ai" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=luma.ai&sz=16" alt="">Luma AI Dream Machine</a>
+      <a class="site-item" href="https://stability.ai/stable-video" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=stability.ai&sz=16" alt="">Stable Video</a>
+      <a class="site-item" href="https://www.invideo.io" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=invideo.io&sz=16" alt="">InVideo AI</a>
+      <a class="site-item" href="https://www.synthesia.io" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=synthesia.io&sz=16" alt="">Synthesia (数字人)</a>
+      <a class="site-item" href="https://www.d-id.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=d-id.com&sz=16" alt="">D-ID</a>
+      <a class="site-item" href="https://www.heygen.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=heygen.com&sz=16" alt="">HeyGen<span class="site-badge badge-hot">HOT</span></a>
+      <a class="site-item" href="https://www.capcut.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=capcut.com&sz=16" alt="">剪映/CapCut<span class="site-badge badge-cn">国内</span></a>
+      <a class="site-item" href="https://www.wondershare.com/filmora" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=wondershare.com&sz=16" alt="">万兴喵影<span class="site-badge badge-cn">国内</span></a>
+      <a class="site-item" href="https://pixverse.ai" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=pixverse.ai&sz=16" alt="">PixVerse<span class="site-badge badge-new">NEW</span></a>
+      <a class="site-item" href="https://minimax.video" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=minimax.io&sz=16" alt="">MiniMax Video<span class="site-badge badge-cn">国内</span></a>
+      <a class="site-item" href="https://www.wan-video.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=aliyun.com&sz=16" alt="">通义万相视频<span class="site-badge badge-cn">国内</span></a>
+    </div>
+  </div>
+
+  <!-- ===== AI 编程 / Coding ===== -->
+  <div class="category-block" id="ai-code">
+    <div class="cat-header">
+      <span class="cat-icon">💻</span>
+      <span class="cat-title" data-lang="zh">AI 编程 / 开发工具</span>
+      <span class="cat-title" data-lang="en" style="display:none">AI Coding / Dev Tools</span>
+    </div>
+    <div class="sites-grid">
+      <a class="site-item" href="https://github.com/features/copilot" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=github.com&sz=16" alt="">GitHub Copilot<span class="site-badge badge-hot">HOT</span></a>
+      <a class="site-item" href="https://cursor.sh" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=cursor.sh&sz=16" alt="">Cursor<span class="site-badge badge-hot">HOT</span></a>
+      <a class="site-item" href="https://www.tabnine.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=tabnine.com&sz=16" alt="">Tabnine</a>
+      <a class="site-item" href="https://codeium.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=codeium.com&sz=16" alt="">Codeium<span class="site-badge badge-free">FREE</span></a>
+      <a class="site-item" href="https://replit.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=replit.com&sz=16" alt="">Replit AI</a>
+      <a class="site-item" href="https://www.codegpt.co" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=codegpt.co&sz=16" alt="">CodeGPT</a>
+      <a class="site-item" href="https://aws.amazon.com/codewhisperer" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=amazon.com&sz=16" alt="">Amazon CodeWhisperer</a>
+      <a class="site-item" href="https://v0.dev" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=v0.dev&sz=16" alt="">Vercel v0<span class="site-badge badge-new">NEW</span></a>
+      <a class="site-item" href="https://bolt.new" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=bolt.new&sz=16" alt="">Bolt.new<span class="site-badge badge-new">NEW</span></a>
+      <a class="site-item" href="https://lovable.dev" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=lovable.dev&sz=16" alt="">Lovable</a>
+      <a class="site-item" href="https://www.blackbox.ai" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=blackbox.ai&sz=16" alt="">Blackbox AI</a>
+      <a class="site-item" href="https://www.codesandbox.io" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=codesandbox.io&sz=16" alt="">CodeSandbox AI</a>
+      <a class="site-item" href="https://devin.ai" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=devin.ai&sz=16" alt="">Devin AI</a>
+      <a class="site-item" href="https://www.codebuddy.cn" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=codebuddy.cn&sz=16" alt="">CodeBuddy<span class="site-badge badge-cn">国内</span></a>
+      <a class="site-item" href="https://tongyi.aliyun.com/lingma" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=aliyun.com&sz=16" alt="">通义灵码<span class="site-badge badge-cn">国内</span></a>
+      <a class="site-item" href="https://copilot.baidu.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=baidu.com&sz=16" alt="">文心快码<span class="site-badge badge-cn">国内</span></a>
+      <a class="site-item" href="https://marscode.cn" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=marscode.cn&sz=16" alt="">MarsCode (字节)<span class="site-badge badge-cn">国内</span></a>
+    </div>
+  </div>
+
+  <!-- ===== 两列布局：写作 + 搜索 ===== -->
+  <div class="two-col">
+
+    <!-- AI 写作 -->
+    <div class="category-block" id="ai-write">
+      <div class="cat-header">
+        <span class="cat-icon">✍️</span>
+        <span class="cat-title" data-lang="zh">AI 写作 / 办公助手</span>
+        <span class="cat-title" data-lang="en" style="display:none">AI Writing / Office</span>
+      </div>
+      <div class="sites-grid">
+        <a class="site-item" href="https://www.notion.so/product/ai" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=notion.so&sz=16" alt="">Notion AI<span class="site-badge badge-hot">HOT</span></a>
+        <a class="site-item" href="https://www.jasper.ai" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=jasper.ai&sz=16" alt="">Jasper AI</a>
+        <a class="site-item" href="https://www.copy.ai" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=copy.ai&sz=16" alt="">Copy.ai</a>
+        <a class="site-item" href="https://writesonic.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=writesonic.com&sz=16" alt="">Writesonic</a>
+        <a class="site-item" href="https://www.grammarly.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=grammarly.com&sz=16" alt="">Grammarly AI</a>
+        <a class="site-item" href="https://quillbot.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=quillbot.com&sz=16" alt="">QuillBot</a>
+        <a class="site-item" href="https://www.sudowrite.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=sudowrite.com&sz=16" alt="">Sudowrite</a>
+        <a class="site-item" href="https://rytr.me" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=rytr.me&sz=16" alt="">Rytr</a>
+        <a class="site-item" href="https://www.xiezuocat.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=xiezuocat.com&sz=16" alt="">写作猫<span class="site-badge badge-cn">国内</span></a>
+        <a class="site-item" href="https://wenxian.so.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=so.com&sz=16" alt="">360AI写作<span class="site-badge badge-cn">国内</span></a>
+        <a class="site-item" href="https://txyz.ai" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=txyz.ai&sz=16" alt="">TXYZ AI</a>
+        <a class="site-item" href="https://www.feishu.cn/product/ai" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=feishu.cn&sz=16" alt="">飞书AI<span class="site-badge badge-cn">国内</span></a>
+        <a class="site-item" href="https://ai.dingtalk.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=dingtalk.com&sz=16" alt="">钉钉AI<span class="site-badge badge-cn">国内</span></a>
+        <a class="site-item" href="https://www.wenxin.baidu.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=baidu.com&sz=16" alt="">讯飞写作<span class="site-badge badge-cn">国内</span></a>
+      </div>
+    </div>
+
+    <!-- AI 搜索 -->
+    <div class="category-block" id="ai-search">
+      <div class="cat-header">
+        <span class="cat-icon">🔍</span>
+        <span class="cat-title" data-lang="zh">AI 搜索 / 研究助手</span>
+        <span class="cat-title" data-lang="en" style="display:none">AI Search / Research</span>
+      </div>
+      <div class="sites-grid">
+        <a class="site-item" href="https://www.perplexity.ai" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=perplexity.ai&sz=16" alt="">Perplexity AI<span class="site-badge badge-hot">HOT</span></a>
+        <a class="site-item" href="https://you.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=you.com&sz=16" alt="">You.com</a>
+        <a class="site-item" href="https://consensus.app" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=consensus.app&sz=16" alt="">Consensus</a>
+        <a class="site-item" href="https://www.elicit.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=elicit.com&sz=16" alt="">Elicit</a>
+        <a class="site-item" href="https://www.semanticscholar.org" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=semanticscholar.org&sz=16" alt="">Semantic Scholar</a>
+        <a class="site-item" href="https://scite.ai" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=scite.ai&sz=16" alt="">Scite.ai</a>
+        <a class="site-item" href="https://www.phind.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=phind.com&sz=16" alt="">Phind (代码搜索)</a>
+        <a class="site-item" href="https://www.bing.com/chat" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=bing.com&sz=16" alt="">必应 Copilot</a>
+        <a class="site-item" href="https://www.tiangong.cn" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=tiangong.cn&sz=16" alt="">天工搜索<span class="site-badge badge-cn">国内</span></a>
+        <a class="site-item" href="https://metaso.cn" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=metaso.cn&sz=16" alt="">秘塔AI搜索<span class="site-badge badge-cn">国内</span></a>
+        <a class="site-item" href="https://devv.ai" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=devv.ai&sz=16" alt="">Devv.ai (程序员)</a>
+        <a class="site-item" href="https://felo.ai" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=felo.ai&sz=16" alt="">Felo AI</a>
+        <a class="site-item" href="https://brainstorm.link" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=brainstorm.link&sz=16" alt="">BrainStorm</a>
+        <a class="site-item" href="https://www.google.com/search/about" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=google.com&sz=16" alt="">Google AI Overview</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== AI 音频 / Audio ===== -->
+  <div class="category-block" id="ai-audio">
+    <div class="cat-header">
+      <span class="cat-icon">🎵</span>
+      <span class="cat-title" data-lang="zh">AI 音频 / 音乐 / 语音</span>
+      <span class="cat-title" data-lang="en" style="display:none">AI Audio / Music / Voice</span>
+    </div>
+    <div class="sites-grid">
+      <a class="site-item" href="https://suno.ai" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=suno.ai&sz=16" alt="">Suno AI (音乐)<span class="site-badge badge-hot">HOT</span></a>
+      <a class="site-item" href="https://www.udio.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=udio.com&sz=16" alt="">Udio</a>
+      <a class="site-item" href="https://elevenlabs.io" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=elevenlabs.io&sz=16" alt="">ElevenLabs (TTS)</a>
+      <a class="site-item" href="https://mubert.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=mubert.com&sz=16" alt="">Mubert</a>
+      <a class="site-item" href="https://www.soundraw.io" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=soundraw.io&sz=16" alt="">Soundraw</a>
+      <a class="site-item" href="https://www.descript.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=descript.com&sz=16" alt="">Descript</a>
+      <a class="site-item" href="https://www.aiva.ai" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=aiva.ai&sz=16" alt="">AIVA</a>
+      <a class="site-item" href="https://audiogen.co" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=audiogen.co&sz=16" alt="">AudioGen</a>
+      <a class="site-item" href="https://www.resemble.ai" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=resemble.ai&sz=16" alt="">Resemble AI</a>
+      <a class="site-item" href="https://www.musicfy.lol" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=musicfy.lol&sz=16" alt="">Musicfy</a>
+      <a class="site-item" href="https://www.riffusion.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=riffusion.com&sz=16" alt="">Riffusion</a>
+      <a class="site-item" href="https://yige.baidu.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=baidu.com&sz=16" alt="">文心一格音乐<span class="site-badge badge-cn">国内</span></a>
+      <a class="site-item" href="https://www.ttson.cn" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=ttson.cn&sz=16" alt="">TTSON配音<span class="site-badge badge-cn">国内</span></a>
+      <a class="site-item" href="https://ttsmaker.cn" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=ttsmaker.cn&sz=16" alt="">TTSMaker<span class="site-badge badge-cn">国内</span></a>
+    </div>
+  </div>
+
+  <!-- ===== 两列：3D + Agent ===== -->
+  <div class="two-col">
+
+    <!-- AI 3D -->
+    <div class="category-block" id="ai-3d">
+      <div class="cat-header">
+        <span class="cat-icon">🧊</span>
+        <span class="cat-title" data-lang="zh">AI 3D / 建模</span>
+        <span class="cat-title" data-lang="en" style="display:none">AI 3D Modeling</span>
+      </div>
+      <div class="sites-grid">
+        <a class="site-item" href="https://lumalabs.ai/dream-machine" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=luma.ai&sz=16" alt="">Luma AI 3D<span class="site-badge badge-hot">HOT</span></a>
+        <a class="site-item" href="https://spline.design" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=spline.design&sz=16" alt="">Spline AI</a>
+        <a class="site-item" href="https://www.meshy.ai" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=meshy.ai&sz=16" alt="">Meshy AI</a>
+        <a class="site-item" href="https://tripo3d.ai" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=tripo3d.ai&sz=16" alt="">Tripo3D</a>
+        <a class="site-item" href="https://www.csm.ai" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=csm.ai&sz=16" alt="">CSM AI</a>
+        <a class="site-item" href="https://www.scenario.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=scenario.com&sz=16" alt="">Scenario</a>
+        <a class="site-item" href="https://www.kaedim3d.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=kaedim3d.com&sz=16" alt="">Kaedim</a>
+        <a class="site-item" href="https://spar3d.github.io" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=github.io&sz=16" alt="">SPAR3D</a>
+      </div>
+    </div>
+
+    <!-- AI Agent -->
+    <div class="category-block" id="ai-agent">
+      <div class="cat-header">
+        <span class="cat-icon">🤖</span>
+        <span class="cat-title" data-lang="zh">AI Agent / 自动化</span>
+        <span class="cat-title" data-lang="en" style="display:none">AI Agent / Automation</span>
+      </div>
+      <div class="sites-grid">
+        <a class="site-item" href="https://www.anthropic.com/claude-agents" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=anthropic.com&sz=16" alt="">Claude Agents<span class="site-badge badge-new">NEW</span></a>
+        <a class="site-item" href="https://openai.com/gpts" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=openai.com&sz=16" alt="">ChatGPT GPTs</a>
+        <a class="site-item" href="https://www.make.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=make.com&sz=16" alt="">Make (Integromat)</a>
+        <a class="site-item" href="https://zapier.com/ai" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=zapier.com&sz=16" alt="">Zapier AI</a>
+        <a class="site-item" href="https://www.langchain.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=langchain.com&sz=16" alt="">LangChain</a>
+        <a class="site-item" href="https://n8n.io" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=n8n.io&sz=16" alt="">n8n<span class="site-badge badge-free">FREE</span></a>
+        <a class="site-item" href="https://www.coze.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=coze.com&sz=16" alt="">Coze (字节)<span class="site-badge badge-cn">国内</span></a>
+        <a class="site-item" href="https://www.dify.ai" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=dify.ai&sz=16" alt="">Dify.ai<span class="site-badge badge-new">NEW</span></a>
+        <a class="site-item" href="https://www.agentgpt.reworkd.ai" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=reworkd.ai&sz=16" alt="">AgentGPT</a>
+        <a class="site-item" href="https://flowise.ai" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=flowise.ai&sz=16" alt="">FlowiseAI</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== AI 商业 / Business ===== -->
+  <div class="category-block" id="ai-business">
+    <div class="cat-header">
+      <span class="cat-icon">💼</span>
+      <span class="cat-title" data-lang="zh">AI 商业 / 营销 / 设计</span>
+      <span class="cat-title" data-lang="en" style="display:none">AI Business / Marketing / Design</span>
+    </div>
+    <div class="sites-grid">
+      <a class="site-item" href="https://www.canva.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=canva.com&sz=16" alt="">Canva AI</a>
+      <a class="site-item" href="https://www.figma.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=figma.com&sz=16" alt="">Figma AI<span class="site-badge badge-new">NEW</span></a>
+      <a class="site-item" href="https://gamma.app" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=gamma.app&sz=16" alt="">Gamma (AI PPT)<span class="site-badge badge-hot">HOT</span></a>
+      <a class="site-item" href="https://tome.app" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=tome.app&sz=16" alt="">Tome</a>
+      <a class="site-item" href="https://beautiful.ai" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=beautiful.ai&sz=16" alt="">Beautiful.ai</a>
+      <a class="site-item" href="https://www.salesforce.com/aicloud" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=salesforce.com&sz=16" alt="">Salesforce AI</a>
+      <a class="site-item" href="https://www.hubspot.com/artificial-intelligence" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=hubspot.com&sz=16" alt="">HubSpot AI</a>
+      <a class="site-item" href="https://www.chatbase.co" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=chatbase.co&sz=16" alt="">Chatbase</a>
+      <a class="site-item" href="https://www.tidio.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=tidio.com&sz=16" alt="">Tidio AI</a>
+      <a class="site-item" href="https://www.roketfy.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=roketfy.com&sz=16" alt="">Roketfy (Etsy AI)</a>
+      <a class="site-item" href="https://www.predis.ai" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=predis.ai&sz=16" alt="">Predis.ai</a>
+      <a class="site-item" href="https://www.brandmark.io" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=brandmark.io&sz=16" alt="">Brandmark Logo AI</a>
+      <a class="site-item" href="https://looka.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=looka.com&sz=16" alt="">Looka Logo AI</a>
+      <a class="site-item" href="https://www.namelix.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=namelix.com&sz=16" alt="">Namelix (AI命名)</a>
+      <a class="site-item" href="https://www.motionbear.cn" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=motionbear.cn&sz=16" alt="">稿定AI<span class="site-badge badge-cn">国内</span></a>
+      <a class="site-item" href="https://www.beautiful.ai" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=beautiful.ai&sz=16" alt="">美图AI<span class="site-badge badge-cn">国内</span></a>
+    </div>
+  </div>
+
+  <!-- ===== AI 教育 / Education ===== -->
+  <div class="category-block" id="ai-edu">
+    <div class="cat-header">
+      <span class="cat-icon">📚</span>
+      <span class="cat-title" data-lang="zh">AI 教育 / 学习</span>
+      <span class="cat-title" data-lang="en" style="display:none">AI Education / Learning</span>
+    </div>
+    <div class="sites-grid">
+      <a class="site-item" href="https://khanmigo.ai" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=khanacademy.org&sz=16" alt="">Khanmigo (可汗学院)</a>
+      <a class="site-item" href="https://www.duolingo.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=duolingo.com&sz=16" alt="">Duolingo Max</a>
+      <a class="site-item" href="https://www.coursera.org" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=coursera.org&sz=16" alt="">Coursera AI</a>
+      <a class="site-item" href="https://www.mathway.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=mathway.com&sz=16" alt="">Mathway AI</a>
+      <a class="site-item" href="https://www.photomath.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=photomath.com&sz=16" alt="">Photomath</a>
+      <a class="site-item" href="https://www.socratic.org" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=socratic.org&sz=16" alt="">Socratic by Google</a>
+      <a class="site-item" href="https://summarize.tech" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=summarize.tech&sz=16" alt="">Summarize.tech</a>
+      <a class="site-item" href="https://www.typeset.io" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=typeset.io&sz=16" alt="">SciSpace</a>
+      <a class="site-item" href="https://chatpdf.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=chatpdf.com&sz=16" alt="">ChatPDF</a>
+      <a class="site-item" href="https://www.ask.ai" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=ask.ai&sz=16" alt="">Ask AI</a>
+      <a class="site-item" href="https://www.xueersi.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=xueersi.com&sz=16" alt="">学而思AI<span class="site-badge badge-cn">国内</span></a>
+      <a class="site-item" href="https://www.yuketang.cn" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=yuketang.cn&sz=16" alt="">雨课堂AI<span class="site-badge badge-cn">国内</span></a>
+    </div>
+  </div>
+
+  <!-- ===== 国内 AI 专区 ===== -->
+  <div class="category-block" id="ai-cn">
+    <div class="cat-header">
+      <span class="cat-icon">🇨🇳</span>
+      <span class="cat-title" data-lang="zh">国内 AI 专区 / 精选</span>
+      <span class="cat-title" data-lang="en" style="display:none">China AI Products</span>
+    </div>
+    <div class="sites-grid">
+      <a class="site-item" href="https://www.deepseek.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=deepseek.com&sz=16" alt="">DeepSeek<span class="site-badge badge-hot">HOT</span></a>
+      <a class="site-item" href="https://www.kimi.ai" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=kimi.ai&sz=16" alt="">Kimi AI (月之暗面)</a>
+      <a class="site-item" href="https://yiyan.baidu.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=baidu.com&sz=16" alt="">文心一言</a>
+      <a class="site-item" href="https://tongyi.aliyun.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=aliyun.com&sz=16" alt="">通义千问</a>
+      <a class="site-item" href="https://chatglm.cn" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=chatglm.cn&sz=16" alt="">ChatGLM (清华智谱)</a>
+      <a class="site-item" href="https://xinghuo.xfyun.cn" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=xfyun.cn&sz=16" alt="">讯飞星火</a>
+      <a class="site-item" href="https://www.doubao.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=doubao.com&sz=16" alt="">豆包 (字节跳动)</a>
+      <a class="site-item" href="https://hunyuan.tencent.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=tencent.com&sz=16" alt="">腾讯混元</a>
+      <a class="site-item" href="https://www.baichuan-ai.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=baichuan-ai.com&sz=16" alt="">百川AI</a>
+      <a class="site-item" href="https://www.tiangong.cn" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=tiangong.cn&sz=16" alt="">天工AI (昆仑万维)</a>
+      <a class="site-item" href="https://abab.cn" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=minimax.io&sz=16" alt="">MiniMax ABAB</a>
+      <a class="site-item" href="https://www.zhipu.ai" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=zhipu.ai&sz=16" alt="">智谱AI</a>
+      <a class="site-item" href="https://klingai.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=klingai.com&sz=16" alt="">可灵AI视频</a>
+      <a class="site-item" href="https://www.kuaishou.com/feature/ai" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=kuaishou.com&sz=16" alt="">快手AI</a>
+      <a class="site-item" href="https://www.vidu.com.cn" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=vidu.com.cn&sz=16" alt="">Vidu (生数科技)</a>
+      <a class="site-item" href="https://www.step.fun" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=step.fun&sz=16" alt="">阶跃星辰</a>
+      <a class="site-item" href="https://www.01.ai" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=01.ai&sz=16" alt="">零一万物</a>
+      <a class="site-item" href="https://open.sensetime.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=sensetime.com&sz=16" alt="">商汤SenseNova</a>
+      <a class="site-item" href="https://moss.fastnlp.top" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=fudan.edu.cn&sz=16" alt="">MOSS (复旦)</a>
+    </div>
+  </div>
+
+  <!-- ===== AI 开放平台 / API ===== -->
+  <div class="category-block" id="ai-api">
+    <div class="cat-header">
+      <span class="cat-icon">🔧</span>
+      <span class="cat-title" data-lang="zh">AI 开放平台 / API 接入</span>
+      <span class="cat-title" data-lang="en" style="display:none">AI Platforms / API Access</span>
+    </div>
+    <div class="sites-grid">
+      <a class="site-item" href="https://platform.openai.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=openai.com&sz=16" alt="">OpenAI API</a>
+      <a class="site-item" href="https://console.anthropic.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=anthropic.com&sz=16" alt="">Anthropic API</a>
+      <a class="site-item" href="https://aistudio.google.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=google.com&sz=16" alt="">Google AI Studio</a>
+      <a class="site-item" href="https://replicate.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=replicate.com&sz=16" alt="">Replicate</a>
+      <a class="site-item" href="https://huggingface.co" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=huggingface.co&sz=16" alt="">HuggingFace</a>
+      <a class="site-item" href="https://www.together.ai" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=together.ai&sz=16" alt="">Together AI</a>
+      <a class="site-item" href="https://cloud.baidu.com/product/wenxinworkshop" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=baidu.com&sz=16" alt="">百度千帆<span class="site-badge badge-cn">国内</span></a>
+      <a class="site-item" href="https://dashscope.aliyun.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=aliyun.com&sz=16" alt="">阿里灵积<span class="site-badge badge-cn">国内</span></a>
+      <a class="site-item" href="https://maas.aminer.cn" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=aminer.cn&sz=16" alt="">智谱MaaS<span class="site-badge badge-cn">国内</span></a>
+      <a class="site-item" href="https://spark-api.xf-yun.com" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=xfyun.cn&sz=16" alt="">讯飞开放平台<span class="site-badge badge-cn">国内</span></a>
+      <a class="site-item" href="https://www.volcengine.com/product/ark" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=volcengine.com&sz=16" alt="">火山方舟<span class="site-badge badge-cn">国内</span></a>
+      <a class="site-item" href="https://openrouter.ai" target="_blank"><img class="site-favicon" src="https://www.google.com/s2/favicons?domain=openrouter.ai&sz=16" alt="">OpenRouter</a>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<!-- ===== FOOTER ===== -->
+<div id="footer">
+  <p>
+    <span data-lang="zh">© 2026 AI123 · 全球AI工具导航 · 收录 200+ AI工具 · 每周更新</span>
+    <span data-lang="en">© 2026 AI123 · Global AI Tools Navigation · 200+ AI Tools · Updated Weekly</span>
+  </p>
+  <p style="margin-top:6px">
+    <a href="#" data-lang="zh">关于我们</a>
+    <span data-lang="zh"> | </span>
+    <span data-lang="en"> | </span>
+    <a href="#" data-lang="zh">提交网站</a>
+    <a href="#" data-lang="en">About</a>
+    <span data-lang="en"> | </span>
+    <a href="#" data-lang="en">Submit AI Tool</a>
+    <span> | </span>
+    <a href="https://github.com" target="_blank">GitHub</a>
+  </p>
+</div>
+
+<!-- ===== JavaScript ===== -->
+<script>
+  // 语言切换
+  let currentLang = 'zh';
+  function toggleLang() {
+    currentLang = currentLang === 'zh' ? 'en' : 'zh';
+    document.body.classList.toggle('lang-en', currentLang === 'en');
+    document.getElementById('langBtn').textContent = currentLang === 'zh' ? '🌐 English' : '🌐 中文';
+
+    // 更新搜索框 placeholder
+    document.getElementById('searchInput').placeholder = currentLang === 'zh'
+      ? '搜索AI工具... Search AI Tools...'
+      : 'Search AI Tools...';
+
+    // 更新顶栏导航链接文字
+    document.querySelectorAll('.header-nav a').forEach(a => {
+      const text = a.getAttribute('data-' + currentLang);
+      if (text) a.textContent = text;
+    });
+
+    // 显示/隐藏分类标题
+    document.querySelectorAll('.cat-title').forEach(el => {
+      const lang = el.getAttribute('data-lang');
+      if (lang) el.style.display = (lang === currentLang) ? 'flex' : 'none';
+    });
+  }
+
+  // 初始化显示
+  document.querySelectorAll('.cat-title').forEach(el => {
+    const lang = el.getAttribute('data-lang');
+    if (lang) el.style.display = (lang === 'zh') ? 'flex' : 'none';
+  });
+
+  // 搜索过滤
+  function filterSites(query) {
+    const q = query.trim().toLowerCase();
+    document.querySelectorAll('.site-item').forEach(item => {
+      if (!q) {
+        item.classList.remove('hidden');
+      } else {
+        const text = item.textContent.toLowerCase();
+        item.classList.toggle('hidden', !text.includes(q));
+      }
+    });
+
+    // 隐藏空分类
+    document.querySelectorAll('.category-block').forEach(block => {
+      const visible = block.querySelectorAll('.site-item:not(.hidden)');
+      block.style.display = visible.length > 0 ? '' : 'none';
+    });
+  }
+
+  // 搜索框回车
+  document.getElementById('searchInput').addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      this.value = '';
+      filterSites('');
+    }
+  });
+</script>
+
+</body>
+</html>
